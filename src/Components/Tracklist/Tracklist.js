@@ -1,12 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 import "./Tracklist.css"
 import Track from "../Track/Track";
 
-function Tracklist() {
+function Tracklist(props) {
     return (
         <div className="Tracklist">
-    {/* <!-- You will add a map method that renders a set of Track components  --> */}
-    <Track />
+    {props.tracks && props.tracks.map((track) => {
+            return (
+            <Track 
+            track={track} 
+            key={track.id}
+            onAdd={props.onAdd}
+            onRemove={props.onRemove}
+            isRemoval={props.isRemoval}
+            />
+        );
+    }
+
+    )
+    }
+    
 </div>
     )
 }
