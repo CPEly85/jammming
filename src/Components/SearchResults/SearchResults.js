@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React from "react"
 import "./SearchResults.css";
 import Tracklist from "../Tracklist/Tracklist";
 

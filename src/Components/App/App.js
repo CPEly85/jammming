@@ -4,6 +4,7 @@ import './App.css';
 import SearchBar from '../SearchBar/SearchBar';
 import Playlist from '../Playlist/Playlist';
 import SearchResults from '../SearchResults/SearchResults';
+import Spotify from '../../util/spotify';
 
 
 
@@ -65,12 +66,38 @@ function App() {
     setPlaylistTracks(playlistTracks.filter((playlistTrack) => playlistTrack.id !== track.id))
   }
 
+
+  function updateName(event) {
+    setPlaylistName(event.target.value);
+    }
+
+  
+  function savePlaylist() {
+    const trackURIs = playlistTracks.map((track) => track.uri)
+    
+    Spotify.savePlaylistName(playlistName, trackURIs)
+    .then(
+      setPlaylistName('New Playlist Name'))
+      .then(
+        setPlaylistTracks([])
+    )
+  }
+
+  function search(term) {
+    Spotify.search(term)
+    .then((result) => {
+      setSearchResults(result)
+    })
+  }
+
+
   return (
     <div>
       <h1>JaMMMing</h1>
       <div className='App'>
-        {/* <!-- Add a searchbar component --> */}
-        <SearchBar />
+        {/* Searchbar component */}
+        <SearchBar 
+        onSearch={search}/>
         <div className='App-playlist'>
           {/* SearchResults component */}
           <SearchResults 
@@ -79,8 +106,10 @@ function App() {
           {/* Playlist Component */}
           <Playlist 
             name={playlistName} 
+            onChange={updateName}
             playlistTracks={playlistTracks} 
-            onRemove={removeTrack}/>
+            onRemove={removeTrack}
+            onSave={savePlaylist}/>
         </div>
       
       </div>
